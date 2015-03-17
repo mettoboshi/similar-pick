@@ -6,6 +6,5 @@ gensim==0.10.3
 gunicorn==19.3.0
 itsdangerous==0.24
 numpy==1.9.2
-scipy==0.15.1
 six==1.9.0
 word2vec==0.6.7
