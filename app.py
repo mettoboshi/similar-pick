@@ -1,5 +1,6 @@
-import json
-from flask import Flask
+import urllib
+from flask import Flask, jsonify, request
+from gensim.models import word2vec
 
 app = Flask(__name__)
 
@@ -9,14 +10,17 @@ def hello_world():
     return 'Hello World!'
 
 
-@app.route('/test/')
-def hello_test():
-    data = '{"b": "test"}'
+@app.route('/restrants/', methods=['GET'])
+def get_restrant_list():
 
-    print(data)
-    print(json.dumps(data))
-    return 'Hello World!'
+    words = request.args.get('words')
+    model = word2vec.Word2Vec.load('data/tabelog_baba.model')
+    res = model.most_similar(positive=[urllib.parse.unquote(words)])
+
+    response = jsonify({'results': res})
+    response.status_code = 200
+    return response
 
 if __name__ == '__main__':
-    # app.run(debug=True)
-    app.run()
+    app.run(debug=True)
+    # app.run()
