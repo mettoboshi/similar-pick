@@ -3,9 +3,10 @@
 
 class Restaurant(object):
 
-    def __init__(self, id, name, address, url):
+    def __init__(self, id, name, rank, address, url):
         self.id = id
         self.name = name
+        self.rank = rank
         self.address = address
         self.url = url
 

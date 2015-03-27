@@ -3,9 +3,9 @@ import urllib
 from flask import Flask, jsonify, request
 from gensim.models import word2vec
 
+from similar_pick.models import Restaurant
 from similar_pick.databases import session
 # from sqlalchemy import text
-# from similar_pick.models import Restaurant
 
 app = Flask(__name__)
 
@@ -13,6 +13,31 @@ app = Flask(__name__)
 @app.route('/')
 def hello_world():
     return 'Hello World!'
+
+
+@app.route('/rank')
+def get_sort_rank_data():
+    restaurant_list = []
+    arg_count = request.args.get('count')
+
+    if arg_count is None:
+        max_count = 20
+    else:
+        max_count = int(arg_count)
+
+    count = 0
+    for restaurant in session.query(Restaurant).order_by(Restaurant.rank.desc()):
+        restaurant_list.append({'name': restaurant.name,
+                                'rank': restaurant.rank,
+                                'address': restaurant.address,
+                                'url': restaurant.url})
+        count = count + 1
+        if count >= max_count:
+            break
+
+    response = jsonify({'results': restaurant_list})
+    response.status_code = 200
+    return response
 
 
 @app.route('/word2vec')
