@@ -22,7 +22,14 @@ def get_words():
     nega_words = get_arg_words('negative_words')
     word_and_scores = get_similar_words(posi_words, nega_words)
 
-    response = jsonify({'results': word_and_scores})
+    res = []
+    for word_and_score in word_and_scores:
+        obj = {}
+        obj['word'] = word_and_score[0]
+        obj['score'] = word_and_score[1]
+        res.append(obj)
+
+    response = jsonify({'results': res})
     response.status_code = 200
     return response
 
