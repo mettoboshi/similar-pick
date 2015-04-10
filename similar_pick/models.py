@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 class Restaurant(object):
 
     def __init__(self, id, name, rank, address, url):
